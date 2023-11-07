@@ -1,31 +1,9 @@
-<?php
-    session_start();
-    
-    $username = $_SESSION["username"];
-
-    if (!isset($username)) {
-        header("Location: login.php");
-    }
-
-    include "./config/db_connect.php";
-
-    $sql = "SELECT username FROM admin WHERE username = '$username'";
-    $result = mysqli_query($conn, $sql);
-
-    if ($result) {
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            $username = $row["username"];
-        }
-    }
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Teachers</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         * {
@@ -93,26 +71,28 @@
             transition: .5s;
         }
 
-        .dashboard {
-            padding: 30px;
-        }
-
-        .breadcrumb {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap-reverse;
-            background: #dd1b22;
-            color: white;
-            border-radius: 20px;
-            padding: 20px 0;
-        }
-
         .breadcrumb .breadcrumb-text {
             display: flex;
             flex-direction: column;
             gap: 3rem;
             margin-left: 30px;
+        }
+
+        .teachers {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            min-height: calc(100vh - 80px);
+            width: 500px;
+            margin: auto;
+            text-align: center;
+        }
+
+        .teachers h1 {
+            margin-top: 30px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
         }
 
         @media screen and (max-width: 900px) {
@@ -154,18 +134,13 @@
         </div>
     </nav>
 
-    <div class="dashboard">
-        <div class="breadcrumb">
-            <div class="breadcrumb-text">
-                <p id="date"></p>
-                <div class="welcome-text">
-                    <h1>Welcome back, <?php echo $username ?>!</h1>
-                    <p>Check out recent activities in your dashboard</p>
-                </div>
-            </div>
-        </div>
-    </div>
+    <p id="date" style="display: none;"></p>
 
+    <div class="teachers">
+        <img src="./assets/img/coming_soon.png" alt="Website coming soon">
+        <h1>Under construction</h1>
+        <p>We're revamping our website to bring you an exciting new experience. Stay tuned for the big reveal! Thank you for your patience.</p>
+    </div>
 <?php
 
     include "./template/footer.php";
