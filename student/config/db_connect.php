@@ -1,9 +1,9 @@
 <?php
 
-    $servername = "sql9.freemysqlhosting.net";
-    $username = "sql9659205";
-    $password = "cr5ryrXrwT";
-    $dbname = "sql9659205";
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "clearance_portal";
 
     $conn = mysqli_connect($servername, $username, $password, $dbname);
 
