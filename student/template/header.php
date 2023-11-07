@@ -42,6 +42,7 @@
         }
 
         nav .button a {
+            text-decoration: none;
             font-size: 20px;
             color: #dd1b22;
         }
@@ -420,7 +421,7 @@
             <li><a href="courses.php">Courses</a></li>
         </ul>
         <div class="button">
-            <a href="profile.php" class="fa fa-user" id="profile-icon"></a>
+            <a href="profile.php" class="fa fa-user" id="profile-icon" title="Profile"></a>
             <i class="fa fa-bars" id="menu"></i>
             <i class="fa fa-close" id="close"></i>
         </div>
