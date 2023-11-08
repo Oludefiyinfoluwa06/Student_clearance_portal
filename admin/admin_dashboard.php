@@ -18,6 +18,12 @@
             $username = $row["username"];
         }
     }
+
+    $sql1 = "SELECT * FROM students ORDER BY created_at ASC LIMIT 5";
+    $result1 = mysqli_query($conn, $sql1);
+
+    $sql2 = "SELECT * FROM lecturers ORDER BY created_at ASC LIMIT 5";
+    $result2 = mysqli_query($conn, $sql2);
 ?>
 
 <!DOCTYPE html>
@@ -33,6 +39,7 @@
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow-x: hidden;
         }
 
         nav {
@@ -115,6 +122,86 @@
             margin-left: 30px;
         }
 
+        .head-count {
+            color: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            margin-top: 30px;
+            cursor: pointer;
+        }
+
+        .student-count, .lecturers-count {
+            background: #dd1b22;
+            padding: 7px 13px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            gap: 1rem;
+            border: 2px solid #dd1b22;
+        }
+
+        .lecturers-count {
+            background: white;
+            color: #dd1b22;
+        }
+
+        .student-count:hover, .lecturers-count:hover {
+            background: #dd1b22;
+            color: #fff;
+            transition: .5s;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: Arial, sans-serif;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        thead th {
+            background-color: #dd1b22;
+            color: #fff;
+            font-weight: bold;
+            text-align: left;
+            padding: 10px;
+        }
+
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        tbody tr:hover {
+            background-color: #ffedee;
+            cursor: pointer;
+        }
+
+        .see-all button {
+            margin-top: 20px;
+            width: 100%;
+            padding: 8px;
+            color: #fff;
+            background: #dd1b22;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .lecturers {
+            display: none;
+        }
+
+        .no-lect-text {
+            font-size: 30px;
+            margin-top: 10px;
+        }
+
         @media screen and (max-width: 900px) {
             nav .sections {
                 width: 100%;
@@ -135,6 +222,9 @@
             #close {
                 display: none;
             }
+            table {
+                overflow-x: scroll;
+            }
         }
     </style>
 </head>
@@ -144,7 +234,7 @@
         <ul class="sections">
             <li><a href="admin_dashboard.php">Dashboard</a></li>
             <li><a href="students.php">Students</a></li>
-            <li><a href="teachers.php">Teachers</a></li>
+            <li><a href="lecturers.php">Lecturers</a></li>
             <li><a href="fees.php">Fees</a></li>
         </ul>
         <div class="button">
@@ -164,7 +254,114 @@
                 </div>
             </div>
         </div>
+
+        <div class="head-count">
+            <div class="student-count">
+                <i class="fa fa-users"></i>
+                <div class="count">
+                    <h2>Total Students</h2>
+                    <h2>
+                        <?php if (mysqli_num_rows($result1) == 0) {
+                            echo 0;
+                        } else {
+                            echo "null";
+                        } ?>
+                    </h2>
+                </div>
+            </div>
+            <div class="lecturers-count">
+                <i class="fa fa-users"></i>
+                <div class="count">
+                    <h2>Total Lecturers</h2>
+                    <h2>
+                        <?php if (mysqli_num_rows($result2) == 0) {
+                            echo 0;
+                        } else {
+                            echo "";
+                        } ?>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div id="student-table">
+            <table>
+                <thead>
+                    <th>Full Name</th>
+                    <th>Student ID</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Intake</th>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result1)): ?>
+                        <tr>
+                            <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
+                            <td><?php echo $row["student_id"] ?></td>
+                            <td><?php echo $row["gender"] ?></td>
+                            <td><?php echo $row["department"] ?></td>
+                            <td><?php echo $row["intake"] ?></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+
+            <a href="students.php" class="see-all"><button>See all</button></a>
+        </div>
+
+        <div class="lecturers">
+            <?php if (mysqli_num_rows($result2) == 0) { ?>
+                <p class="no-lect-text">There are no lecturers yet</p>
+            <?php } else { ?>
+            <div id="lecturers-table">
+                <table>
+                    <thead>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Gender</th>
+                        <th>Date of Birth</th>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($result2)): ?>
+                            <tr>
+                                <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
+                                <td><?php echo $row["email"] ?></td>
+                                <td><?php echo $row["phone"] ?></td>
+                                <td><?php echo $row["gender"] ?></td>
+                                <td><?php echo $row["dob"] ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
+
+                <a href="lecturers.php" class="see-all"><button>See all</button></a>
+            </div>
+            <?php } ?>
+        </div>
+
     </div>
+
+    <script>
+        // View Students and Lecturers
+        document.querySelector('.lecturers-count').addEventListener('click', () => {
+            document.querySelector('.student-count').style.background = "white";
+            document.querySelector('.student-count').style.color = "#dd1b22";
+            document.querySelector('.lecturers-count').style.background = "#dd1b22";
+            document.querySelector('.lecturers-count').style.color = "white";
+            document.getElementById('student-table').style.display = "none";
+            document.querySelector('.lecturers').style.display = "block";
+        });
+        
+        document.querySelector('.student-count').addEventListener('click', () => {
+            document.querySelector('.lecturers-count').style.background = "white";
+            document.querySelector('.lecturers-count').style.color = "#dd1b22";
+            document.querySelector('.student-count').style.background = "#dd1b22";
+            document.querySelector('.student-count').style.color = "white";
+            document.getElementById('student-table').style.display = "block";
+            document.querySelector('.lecturers').style.display = "none";
+        });
+    </script>
 
 <?php
 

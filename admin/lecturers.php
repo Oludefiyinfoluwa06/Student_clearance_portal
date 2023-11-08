@@ -124,7 +124,7 @@
         <ul class="sections">
             <li><a href="admin_dashboard.php">Dashboard</a></li>
             <li><a href="students.php">Students</a></li>
-            <li><a href="teachers.php">Teachers</a></li>
+            <li><a href="lecturers.php">Lecturers</a></li>
             <li><a href="fees.php">Fees</a></li>
         </ul>
         <div class="button">
