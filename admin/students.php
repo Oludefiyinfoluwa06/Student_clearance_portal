@@ -266,8 +266,7 @@
         </div>
         <div id="student-table">
             <table>
-                <thead>
-                    <!-- <th>S/N</th> -->
+                <thead> 
                     <th>Full Name</th>
                     <th>Student ID</th>
                     <th>Gender</th>
@@ -276,17 +275,21 @@
                     <th>Actions</th>
                 </thead>
                 <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                        <tr>
-                            <!-- <td><?php echo $row["id"] ?></td> -->
-                            <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
-                            <td><?php echo $row["student_id"] ?></td>
-                            <td><?php echo $row["gender"] ?></td>
-                            <td><?php echo $row["department"] ?></td>
-                            <td><?php echo $row["intake"] ?></td>
-                            <td><a href="#">Delete</a></td>
-                        </tr>
-                    <?php endwhile; ?>
+                    <?php
+                        if (mysqli_num_rows($result) > 0) {
+                            while ($row = mysqli_fetch_assoc($result)): ?>
+                                <tr>
+                                    <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
+                                    <td><?php echo $row["student_id"] ?></td>
+                                    <td><?php echo $row["gender"] ?></td>
+                                    <td><?php echo $row["department"] ?></td>
+                                    <td><?php echo $row["intake"] ?></td>
+                                    <td><a href="delete.php?id=<?php echo $row["student_id"] ?>">Delete</a></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        <?php } else { ?>
+                            <p style="font-size: 20px; margin-top: 10px;">There are no students yet</p>
+                        <?php } ?>
                 </tbody>
             </table>
             <a href="add_students.php" class="add-students"><button>Add students</button></a>

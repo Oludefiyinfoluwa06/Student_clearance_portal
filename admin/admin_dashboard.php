@@ -24,6 +24,24 @@
 
     $sql2 = "SELECT * FROM lecturers ORDER BY created_at ASC LIMIT 5";
     $result2 = mysqli_query($conn, $sql2);
+
+    $scount_query = "SELECT COUNT(*) as total_students FROM students";
+    $scount_result = mysqli_query($conn, $scount_query);
+
+    if ($scount_result) {
+        $stotal_count = mysqli_fetch_assoc($scount_result)['total_students'];
+    } else {
+        $stotal_count = "Error fetching total count";
+    }
+
+    $lcount_query = "SELECT COUNT(*) as total_lecturers FROM lecturers";
+    $lcount_result = mysqli_query($conn, $lcount_query);
+
+    if ($lcount_result) {
+        $ltotal_count = mysqli_fetch_assoc($lcount_result)['total_lecturers'];
+    } else {
+        $ltotal_count = "Error fetching total count";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -270,53 +288,45 @@
             <div class="student-count">
                 <div class="count">
                     <h2>Total Students</h2>
-                    <h2>
-                        <?php if (mysqli_num_rows($result1) == 0) {
-                            echo 0;
-                        } else {
-                            echo "null";
-                        } ?>
-                    </h2>
+                    <h2><?php echo $stotal_count ?></h2>
                 </div>
             </div>
             <div class="lecturers-count">
                 <div class="count">
                     <h2>Total Lecturers</h2>
-                    <h2>
-                        <?php if (mysqli_num_rows($result2) == 0) {
-                            echo 0;
-                        } else {
-                            echo "";
-                        } ?>
-                    </h2>
+                    <h2><?php echo $ltotal_count ?></h2>
                 </div>
             </div>
         </div>
 
-        <div id="student-table">
-            <table>
-                <thead>
-                    <th>Full Name</th>
-                    <th>Student ID</th>
-                    <th>Gender</th>
-                    <th>Department</th>
-                    <th>Intake</th>
-                </thead>
-                <tbody>
-                    <?php while ($row = mysqli_fetch_assoc($result1)): ?>
-                        <tr>
-                            <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
-                            <td><?php echo $row["student_id"] ?></td>
-                            <td><?php echo $row["gender"] ?></td>
-                            <td><?php echo $row["department"] ?></td>
-                            <td><?php echo $row["intake"] ?></td>
-                        </tr>
-                    <?php endwhile; ?>
-                </tbody>
-            </table>
+        <?php if (mysqli_num_rows($result1) == 0) { ?>
+                <p class="no-lect-text">There are no students yet</p>
+        <?php } else { ?>
+            <div id="student-table">
+                <table>
+                    <thead>
+                        <th>Full Name</th>
+                        <th>Student ID</th>
+                        <th>Gender</th>
+                        <th>Department</th>
+                        <th>Intake</th>
+                    </thead>
+                    <tbody>
+                        <?php while ($row = mysqli_fetch_assoc($result1)): ?>
+                            <tr>
+                                <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
+                                <td><?php echo $row["student_id"] ?></td>
+                                <td><?php echo $row["gender"] ?></td>
+                                <td><?php echo $row["department"] ?></td>
+                                <td><?php echo $row["intake"] ?></td>
+                            </tr>
+                        <?php endwhile; ?>
+                    </tbody>
+                </table>
 
-            <a href="students.php" class="see-all"><button>See all</button></a>
-        </div>
+                <a href="students.php" class="see-all"><button>See all</button></a>
+            </div>
+        <?php } ?>
 
         <div class="lecturers">
             <?php if (mysqli_num_rows($result2) == 0) { ?>

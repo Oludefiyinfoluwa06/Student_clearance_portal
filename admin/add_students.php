@@ -1,10 +1,10 @@
 <?php
     include "./config/db_connect.php";
 
-    $student_id1 = $firstname = $lastname = $email = $gender = $dob = $phone = $department = $intake = $input_error = "";
+    $student_id = $firstname = $lastname = $email = $gender = $dob = $phone = $department = $intake = $input_error = "";
 
     if (isset($_POST["add_student"])) {
-        $student_id1 = $_POST["student_id"];
+        $student_id = $_POST["student_id"];
         $firstname = $_POST["firstname"];
         $lastname = $_POST["lastname"];
         $email = $_POST["email"];
@@ -13,30 +13,31 @@
         $phone = $_POST["phone"];
         $department = $_POST["department"];
         $intake = $_POST["intake"];
+        $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-        if ($student_id1 == "" || $firstname == "" || $lastname == "" || $email == "" || $gender = "" || $dob == "" || $phone == "" || $department == "" || $intake == "") {
+        if ($student_id == "" || $firstname == "" || $lastname == "" || $email == "" || $gender == "" || $dob == "" || $phone == "" || $department == "" || $intake == "" || $password == "") {
             $input_error = "Input fields cannot be empty";
         } else {
             $input_error = "";
         }
 
         if (empty($input_error)) {
-            $sql = "SELECT student_id FROM students WHERE student_id = '$student_id1'";
+            $sql = "SELECT student_id FROM students WHERE student_id = '$student_id'";
             $result1 = mysqli_query($conn, $sql);
 
             if ($result1) {
                 $row = mysqli_fetch_array($result1);
-                if ($row["student_id"] == $student_id1) {
+                if ($row["student_id"] == $student_id) {
                     $input_error = "Student ID exists already";
                 } else {
-                    $query = "INSERT INTO students (student_id, firstname, lastname, email, gender, dob, phone, department, intake) VALUES ('$student_id1', '$firstname', '$lastname', '$email', '$gender', '$dob', '$phone', '$department', '$intake')";
+                    $query = "INSERT INTO students (student_id, firstname, lastname, email, gender, dob, phone, department, intake, password) VALUES ('$student_id', '$firstname', '$lastname', '$email', '$gender', '$dob', '$phone', '$department', '$intake', '$password')";
                     $result2 = mysqli_query($conn, $query);
 
                     if ($result2) {
                         header("Location: students.php");
                         exit();
                     } else {
-                        $input_error = "There was an error adding the student";
+                        $input_error = "There was an error adding student";
                     }
                 }
             }
@@ -240,23 +241,23 @@
             <div class="input-group one">
                 <div class="input-box">
                     <label for="student_id">Student ID</label>
-                    <input type="text" placeholder="Student ID" name="student_id" id="student_id">
+                    <input type="text" placeholder="Student ID" name="student_id" id="student_id" value="<?php htmlspecialchars($student_id) ?>">
                 </div>
             </div>
             <div class="input-group two">
                 <div class="input-box">
                     <label for="firstname">Firstname</label>
-                    <input type="text" placeholder="Firstname" name="firstname" id="firstname">
+                    <input type="text" placeholder="Firstname" name="firstname" id="firstname" value="<?php htmlspecialchars($firstname) ?>">
                 </div>
                 <div class="input-box">
                     <label for="lastname">Lastname</label>
-                    <input type="text" placeholder="Lastname" name="lastname" id="lastname">
+                    <input type="text" placeholder="Lastname" name="lastname" id="lastname" value="<?php htmlspecialchars($lastname) ?>">
                 </div>
             </div>
             <div class="input-group three">
                 <div class="input-box">
                     <label for="email">Email</label>
-                    <input type="email" placeholder="Email Address" name="email" id="email">
+                    <input type="email" placeholder="Email Address" name="email" id="email" value="<?php htmlspecialchars($email) ?>">
                 </div>
                 <div class="input-box">
                     <label for="gender">Gender</label>
@@ -270,11 +271,11 @@
             <div class="input-group four">
                 <div class="input-box">
                     <label for="dob">Date of birth</label>
-                    <input type="date" placeholder="Date of Birth" name="dob" id="dob">
+                    <input type="date" placeholder="Date of Birth" name="dob" id="dob" value="<?php htmlspecialchars($dob) ?>">
                 </div>
                 <div class="input-box">
                     <label for="phone">Phone Number</label>
-                    <input type="tel" placeholder="Phone Number" name="phone" id="phone">
+                    <input type="tel" placeholder="Phone Number" name="phone" id="phone" value="<?php htmlspecialchars($phone) ?>">
                 </div>
             </div>
             <div class="input-group five">
@@ -306,7 +307,7 @@
             <div class="input-group seven">
                 <div class="input-box">
                     <label for="password">Password</label>
-                    <input type="password" placeholder="Password" name="password" id="password">
+                    <input type="password" placeholder="Password" name="password" id="password" value="<?php htmlspecialchars($password) ?>">
                 </div>
             </div>
             <button name="add_student">Add Student</button>
