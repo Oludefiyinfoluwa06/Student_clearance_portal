@@ -184,6 +184,21 @@
             border-bottom: 1px solid #ccc;
         }
 
+        #student-table {
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+        }
+        
+        #student-table::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #student-table::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 50px;
+        }
+
         #hide-titles, #show-titles {
             cursor: pointer;
         }
@@ -248,45 +263,35 @@
     <div class="students">
         <div class="header">
             <h2>All Students</h2>
-            <div>
-                <p class="sort-by">Sort by <i class="fa fa-angle-down" id="show-titles"></i> <i class="fa fa-angle-up" id="hide-titles"></i></p>
-                <div class="table-titles">
-                    <p>Full Name</p>
-                    <p>Student ID</p>
-                    <p>Department</p>
-                    <p>Intake</p>
-                </div>
-            </div>
         </div>
-        <table>
-            <thead>
-                <!-- <th>S/N</th> -->
-                <th>Full Name</th>
-                <th>Student ID</th>
-                <th>Gender</th>
-                <th>Department</th>
-                <th>Intake</th>
-            </thead>
-            <tbody>
-                <?php while ($row = mysqli_fetch_assoc($result)): ?>
-                    <tr>
-                        <!-- <td><?php echo $row["id"] ?></td> -->
-                        <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
-                        <td><?php echo $row["student_id"] ?></td>
-                        <td><?php echo $row["gender"] ?></td>
-                        <td><?php echo $row["department"] ?></td>
-                        <td><?php echo $row["intake"] ?></td>
-                    </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-        <a href="add_students.php" class="add-students"><button>Add students</button></a>
+        <div id="student-table">
+            <table>
+                <thead>
+                    <!-- <th>S/N</th> -->
+                    <th>Full Name</th>
+                    <th>Student ID</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Intake</th>
+                    <th>Actions</th>
+                </thead>
+                <tbody>
+                    <?php while ($row = mysqli_fetch_assoc($result)): ?>
+                        <tr>
+                            <!-- <td><?php echo $row["id"] ?></td> -->
+                            <td><?php echo $row["lastname"] . " " . $row["firstname"] ?></td>
+                            <td><?php echo $row["student_id"] ?></td>
+                            <td><?php echo $row["gender"] ?></td>
+                            <td><?php echo $row["department"] ?></td>
+                            <td><?php echo $row["intake"] ?></td>
+                            <td><a href="#">Delete</a></td>
+                        </tr>
+                    <?php endwhile; ?>
+                </tbody>
+            </table>
+            <a href="add_students.php" class="add-students"><button>Add students</button></a>
+        </div>
     </div>
-
-    <p id="date" style="display: none;"></p>
-
-<?php
-
-    include "./template/footer.php";
-
-?>
+    
+</body>
+</html>

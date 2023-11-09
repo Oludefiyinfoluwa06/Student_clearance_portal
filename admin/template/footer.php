@@ -28,19 +28,6 @@
             closeIcon.style.display = "none";
             menuIcon.style.display = "block";
         });
-
-        // Sort by
-        document.querySelector('#show-titles').addEventListener('click', () => {
-            document.querySelector("#show-titles").style.display = 'none';
-            document.querySelector("#hide-titles").style.display = 'block';
-            document.querySelector(".table-titles").style.display = 'block';
-        });
-
-        document.querySelector('#hide-titles').addEventListener('click', () => {
-            document.querySelector("#show-titles").style.display = 'block';
-            document.querySelector("#hide-titles").style.display = 'none';
-            document.querySelector(".table-titles").style.display = 'none';
-        });
     </script>
 </body>
 </html>

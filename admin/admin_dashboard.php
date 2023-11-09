@@ -154,10 +154,24 @@
             transition: .5s;
         }
 
-        table {
+        #student-table {
+            width: 100%;
+            overflow-x: scroll;
+            overflow-y: hidden;
+        }
+        
+        #student-table::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        #student-table::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 50px;
+        }
+
+        #student-table table {
             width: 100%;
             border-collapse: collapse;
-            font-family: Arial, sans-serif;
             border: 1px solid #ccc;
             margin-top: 20px;
         }
@@ -222,9 +236,6 @@
             #close {
                 display: none;
             }
-            table {
-                overflow-x: scroll;
-            }
         }
     </style>
 </head>
@@ -257,7 +268,6 @@
 
         <div class="head-count">
             <div class="student-count">
-                <i class="fa fa-users"></i>
                 <div class="count">
                     <h2>Total Students</h2>
                     <h2>
@@ -270,7 +280,6 @@
                 </div>
             </div>
             <div class="lecturers-count">
-                <i class="fa fa-users"></i>
                 <div class="count">
                     <h2>Total Lecturers</h2>
                     <h2>
