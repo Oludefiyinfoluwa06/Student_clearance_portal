@@ -7,29 +7,29 @@
         header("Location: login.php");
     }
 
-
     include "./config/db_connect.php";
 
-    $sql = "SELECT firstname FROM students WHERE student_id = '$student_id'";
+    $sql = "SELECT firstname, department, schol_perc FROM students WHERE student_id = '$student_id'";
     
     $result = mysqli_query($conn, $sql);
+    $row = mysqli_fetch_assoc($result);
+    $firstname = $row["firstname"];
+    $department = $row["department"];
+    $schol_perc = $row["schol_perc"];
 
-    if ($result) {
-        if (mysqli_num_rows($result) == 1) {
-            $row = mysqli_fetch_assoc($result);
-            $firstname = $row["firstname"];
-        }
-    }
-
-    $sqli = "SELECT * FROM fees";
+    $sqli = "SELECT * FROM fees where department = '$department'";
     $resulti = mysqli_query($conn, $sqli);
 
     if ($resulti) {
-        if (mysqli_num_rows($resulti) == 1) {
+        if (mysqli_num_rows($resulti) > 0) {
             $row = mysqli_fetch_assoc($resulti);
             $tuition = $row["tuition"];
             $miscellaneous = $row["miscellaneous"];
             $operational_dues = $row["operational_dues"];
+        } else {
+            $tuition = "N/A";
+            $miscellaneous = "N/A";
+            $operational_dues = "N/A";
         }
     }
 
@@ -71,8 +71,8 @@
                 </div>
                 <div class="sch-fees hidden">
                     <i class="fa fa-money"></i>
-                    <h2 style="margin-top: 14px; margin-bottom: 7px;">#200,000</h2>
-                    <p>Total Paid</p>
+                    <h2 style="margin-top: 14px; margin-bottom: 7px;">#<?php echo (intval($tuition) - (intval($tuition) * (intval($schol_perc) / 100))) ?></h2>
+                    <p>Tuition after scholarship</p>
                 </div>
             </div>
         </div>

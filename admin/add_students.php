@@ -1,7 +1,7 @@
 <?php
     include "./config/db_connect.php";
 
-    $student_id = $firstname = $lastname = $email = $gender = $dob = $phone = $department = $intake = $input_error = "";
+    $student_id = $firstname = $lastname = $email = $gender = $dob = $phone = $department = $intake = $schol_perc = $input_error = "";
 
     if (isset($_POST["add_student"])) {
         $student_id = $_POST["student_id"];
@@ -13,9 +13,10 @@
         $phone = $_POST["phone"];
         $department = $_POST["department"];
         $intake = $_POST["intake"];
+        $schol_perc = $_POST["schol_perc"];
         $password = password_hash($_POST["password"], PASSWORD_DEFAULT);
 
-        if ($student_id == "" || $firstname == "" || $lastname == "" || $email == "" || $gender == "" || $dob == "" || $phone == "" || $department == "" || $intake == "" || $password == "") {
+        if ($student_id == "" || $firstname == "" || $lastname == "" || $email == "" || $gender == "" || $dob == "" || $phone == "" || $department == "" || $intake == "" || $schol_perc == "" || $password == "") {
             $input_error = "Input fields cannot be empty";
         } else {
             $input_error = "";
@@ -30,7 +31,7 @@
                 if ($row["student_id"] == $student_id) {
                     $input_error = "Student ID exists already";
                 } else {
-                    $query = "INSERT INTO students (student_id, firstname, lastname, email, gender, dob, phone, department, intake, password) VALUES ('$student_id', '$firstname', '$lastname', '$email', '$gender', '$dob', '$phone', '$department', '$intake', '$password')";
+                    $query = "INSERT INTO students (student_id, firstname, lastname, email, gender, dob, phone, department, intake, schol_perc, password) VALUES ('$student_id', '$firstname', '$lastname', '$email', '$gender', '$dob', '$phone', '$department', '$intake', '$schol_perc', '$password')";
                     $result2 = mysqli_query($conn, $query);
 
                     if ($result2) {
@@ -182,7 +183,7 @@
             cursor: pointer;
         }
 
-        @media screen and (max-width: 1200px) {
+        @media screen and (max-width: 1270px) {
             form .input-group.two .input-box, .input-group.three .input-box, .input-group.four .input-box {
                 width: 100%;
             }
@@ -305,6 +306,12 @@
                 </div>
             </div>
             <div class="input-group seven">
+                <div class="input-box">
+                    <label for="schol_perc">Scholarship Percentage</label>
+                    <input type="text" placeholder="Scholarship Percentage" name="schol_perc" id="schol_perc" value="<?php htmlspecialchars($schol_perc) ?>">
+                </div>
+            </div>
+            <div class="input-group eight">
                 <div class="input-box">
                     <label for="password">Password</label>
                     <input type="password" placeholder="Password" name="password" id="password" value="<?php htmlspecialchars($password) ?>">

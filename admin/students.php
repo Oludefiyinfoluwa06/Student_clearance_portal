@@ -145,19 +145,6 @@
             justify-content: space-between;
         }
 
-        .header .sort-by {
-            padding: 7px 17px;
-            background: #fff;
-            box-shadow: 3px 3px 7px #ccc;
-            border: none;
-            border-radius: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;
-            flex-direction: row;
-            gap: 0.3rem;
-        }
-
         .table-titles {
             border: 1px solid #ccc;
             position: absolute;
@@ -168,20 +155,6 @@
             color: #000;
             display: none;
             border-radius: 10px;
-        }
-
-        .table-titles p {
-            padding: 8px;
-            cursor: pointer;
-            color: #333;
-        }
-
-        .table-titles p:hover {
-            color: #000;
-        }
-
-        .table-titles p:not(:last-child) {
-            border-bottom: 1px solid #ccc;
         }
 
         #student-table {
@@ -272,7 +245,8 @@
                     <th>Gender</th>
                     <th>Department</th>
                     <th>Intake</th>
-                    <th>Actions</th>
+                    <th>Scholarship %</th>
+                    <th>Action</th>
                 </thead>
                 <tbody>
                     <?php
@@ -284,7 +258,8 @@
                                     <td><?php echo $row["gender"] ?></td>
                                     <td><?php echo $row["department"] ?></td>
                                     <td><?php echo $row["intake"] ?></td>
-                                    <td><a href="delete.php?id=<?php echo $row["student_id"] ?>">Delete</a></td>
+                                    <td><?php echo $row["schol_perc"] ?></td>
+                                    <td><a style="color: #000; text-decoration: none;" href="delete.php?id=<?php echo $row["student_id"] ?>"><i class="fa fa-trash"></i> Delete</a></td>
                                 </tr>
                             <?php endwhile; ?>
                         <?php } else { ?>

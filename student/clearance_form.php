@@ -7,19 +7,25 @@
         $sem_fullname = $_POST["sem_fullname"];
         $sem_department = $_POST["sem_department"];
         $sem_intake = $_POST["sem_intake"];
-        $scl_receipt = $_FILES["scl_receipt"]["tmp_name"];
+        $sch_fees = $_FILES["sch_fees"]["tmp_name"];
+        $sch_fees_destination = "uploads/semester_clearance/" . basename($_FILES["sch_fees"]["name"]);
 
-        if ($sem_fullname == "" || $sem_department == "" || $sem_intake == "" || $scl_receipt == "") {
+        if ($sem_fullname == "" || $sem_department == "" || $sem_intake == "" || empty($sch_fees)) {
             $input_error_one = "Input fields cannot be empty";
         }
 
         if(empty($input_error_one)) {
-            $sql = "INSERT INTO semester_clearance (fullname, department, intake, scl_receipt) VALUES ('$sem_fullname', '$sem_department', '$sem_intake', '$scl_receipt')";
-        
-            if (mysqli_query($conn, $sql)) {
-                header("clearance_dashboard.php");
+            if (move_uploaded_file($_FILES["sch_fees"]["tmp_name"], $sch_fees_destination)) {
+                $sql = "INSERT INTO semester_clearance (fullname, department, intake, sch_fees) VALUES ('$sem_fullname', '$sem_department', '$sem_intake', '$sch_fees_destination')";
+                
+                if (mysqli_query($conn, $sql)) {
+                    header("Location: clearance_dashboard.php");
+                    exit();
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                }
             } else {
-                echo "Error: " . mysqli_error($conn);
+                echo "Error uploading the file.";
             }
         }
     }
@@ -31,17 +37,26 @@
         $sch_fees = $_FILES["sch_fees"]["tmp_name"];
         $op_dues = $_FILES["op_dues"]["tmp_name"];
 
+        $sch_fees_destination = "uploads/exam_clearance/" . basename($_FILES["sch_fees"]["name"]);
+        $op_dues_destination = "uploads/exam_clearance/" . basename($_FILES["op_dues"]["name"]);
+
         if ($ex_fullname == "" || $ex_department == "" || $ex_intake == "" || empty($sch_fees) || empty($op_dues)) {
             $input_error_two = "Input fields cannot be empty";
         }
 
         if (empty($input_error_two)) {
-            $sqli = "INSERT INTO exam_clearance (fullname, department, intake, sch_fees, op_dues) VALUES ('$ex_fullname', '$ex_department', '$ex_intake', '$sch_fees', '$op_dues')";
-    
-            if (mysqli_query($conn, $sqli)) {
-                header("clearance_dashboard.php");
+            // Move the uploaded files to the designated folder
+            if (move_uploaded_file($_FILES["sch_fees"]["tmp_name"], $sch_fees_destination) && move_uploaded_file($_FILES["op_dues"]["tmp_name"], $op_dues_destination)) {
+                $sqli = "INSERT INTO exam_clearance (fullname, department, intake, sch_fees, op_dues) VALUES ('$ex_fullname', '$ex_department', '$ex_intake', '$sch_fees_destination', '$op_dues_destination')";
+
+                if (mysqli_query($conn, $sqli)) {
+                    header("Location: clearance_dashboard.php");
+                    exit();
+                } else {
+                    echo "Error: " . mysqli_error($conn);
+                }
             } else {
-                echo "Error: " . mysqli_error($conn);
+                echo "Error uploading the files.";
             }
         }
     }
@@ -86,8 +101,8 @@
                             <input type="text" name="sem_intake">
                         </div>
                         <div class="form-input">
-                            <label for="scl_receipt">Clearance Receipt</label>
-                            <input type="file" name="scl_receipt">
+                            <label for="sch_fees">School Fees</label>
+                            <input type="file" name="sch_fees">
                         </div>
                     </div>
                     <button name="sem_cl">Get cleared</button>
